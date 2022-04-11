@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"mnatsakan_chat_api/pkg/types"
+	"mnatsakan_chat_api/internal/config"
 )
 
 // Server ...
@@ -15,7 +15,7 @@ type Server struct {
 }
 
 // Run ...
-func (receiver *Server) Run(serverConfiguration types.HTTPConfiguration, handler http.Handler) error {
+func (receiver *Server) Run(serverConfiguration *config.HTTPConfiguration, handler http.Handler) error {
 	serverAddress := fmt.Sprintf("%s:%s", serverConfiguration.Host, serverConfiguration.Port)
 
 	receiver.httpServer = &http.Server{

@@ -8,16 +8,16 @@ import (
 
 // Auth ...
 type Auth struct {
-	repository repository.UserRepository
+	repository *repository.UserRepository
 }
 
 // NewAuthService ...
-func NewAuthService(repository repository.UserRepository) *Auth {
+func NewAuthService(repository *repository.UserRepository) *Auth {
 	return &Auth{repository: repository}
 }
 
 // Login ...
-func (receiver *Auth) Login(loginRequest dto.LoginRequest) (*model.User, error) {
+func (receiver *Auth) Login(loginRequest *dto.LoginRequest) (*model.User, error) {
 	// userRepository := receiver.repositories.UserRepository
 
 	// loginRequest, err := utils.ParseJSON[domain.LoginRequest](request.Body)
@@ -46,6 +46,6 @@ func (receiver *Auth) Login(loginRequest dto.LoginRequest) (*model.User, error) 
 }
 
 // Register ...
-func (receiver *Auth) Register(registerRequest dto.RegisterRequest) (*model.User, error) {
+func (receiver *Auth) Register(registerRequest *dto.RegisterRequest) (*model.User, error) {
 
 }

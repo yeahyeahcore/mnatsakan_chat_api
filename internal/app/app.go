@@ -6,10 +6,10 @@ import (
 
 	"mnatsakan_chat_api/internal/config"
 	"mnatsakan_chat_api/internal/handler"
-	"mnatsakan_chat_api/internal/postgres"
 	"mnatsakan_chat_api/internal/repository"
 	"mnatsakan_chat_api/internal/service"
 	"mnatsakan_chat_api/pkg/database"
+	"mnatsakan_chat_api/pkg/postgres"
 	"mnatsakan_chat_api/pkg/server"
 	"mnatsakan_chat_api/pkg/utils"
 
@@ -30,7 +30,7 @@ func Run() {
 		log.Fatalf("configuration file parsing error: %s", err.Error())
 	}
 
-	postgresDriver := postgres.GetDriver(configuration.Database)
+	postgresDriver := postgres.GetDriver(&configuration.Database)
 
 	databaseConnection, err := database.Connect(postgresDriver, loggerConfiguration)
 	if err != nil {
@@ -42,7 +42,7 @@ func Run() {
 	handlersInstance := handler.New(serviceInstance)
 	serverInstance := new(server.Server)
 
-	if err := serverInstance.Run(configuration.HTTP, handlersInstance.InitRoutes()); err != nil {
+	if err := serverInstance.Run(&configuration.HTTP, handlersInstance.InitRoutes()); err != nil {
 		log.Fatalf("error occured while running http server: %s", err.Error())
 	}
 }

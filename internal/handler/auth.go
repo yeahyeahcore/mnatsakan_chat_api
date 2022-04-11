@@ -26,6 +26,8 @@ func (receiver *Handler) login(request *http.Request, response http.ResponseWrit
 		return
 	}
 
+	receiver.services.AuthService.Login(loginInput)
+
 	// userRepository := receiver.repositories.UserRepository
 
 	// loginRequest, err := utils.ParseJSON[domain.LoginRequest](request.Body)
