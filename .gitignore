@@ -1,0 +1,7 @@
+.env
+.go.sum
+<<<<<<< HEAD
+go.sum
+=======
+go.sum
+>>>>>>> def7820b298fdf1bde02f502000afed8827415da
