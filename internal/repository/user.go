@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/mnatsakan_chat_api/internal/model"
+	"mnatsakan_chat_api/internal/model"
 
 	"gorm.io/gorm"
 )

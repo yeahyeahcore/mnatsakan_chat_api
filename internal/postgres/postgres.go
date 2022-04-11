@@ -3,7 +3,7 @@ package postgres
 import (
 	"fmt"
 
-	"github.com/mnatsakan_chat_api/internal/config"
+	"mnatsakan_chat_api/internal/config"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

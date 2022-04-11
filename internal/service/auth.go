@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/mnatsakan_chat_api/internal/dto"
-	"github.com/mnatsakan_chat_api/internal/model"
-	"github.com/mnatsakan_chat_api/internal/repository"
+	"mnatsakan_chat_api/internal/dto"
+	"mnatsakan_chat_api/internal/model"
+	"mnatsakan_chat_api/internal/repository"
 )
 
 // Auth ...

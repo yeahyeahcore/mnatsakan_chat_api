@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/mnatsakan_chat_api/internal/service"
+	"mnatsakan_chat_api/internal/service"
 
 	"github.com/go-martini/martini"
 )

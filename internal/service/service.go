@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/mnatsakan_chat_api/internal/repository"
+	"mnatsakan_chat_api/internal/repository"
 )
 
 var (

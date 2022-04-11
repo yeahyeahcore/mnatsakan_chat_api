@@ -4,14 +4,14 @@ import (
 	"log"
 	"time"
 
-	"github.com/mnatsakan_chat_api/internal/config"
-	"github.com/mnatsakan_chat_api/internal/handler"
-	"github.com/mnatsakan_chat_api/internal/postgres"
-	"github.com/mnatsakan_chat_api/internal/repository"
-	"github.com/mnatsakan_chat_api/internal/service"
-	"github.com/mnatsakan_chat_api/pkg/database"
-	"github.com/mnatsakan_chat_api/pkg/server"
-	"github.com/mnatsakan_chat_api/pkg/utils"
+	"mnatsakan_chat_api/internal/config"
+	"mnatsakan_chat_api/internal/handler"
+	"mnatsakan_chat_api/internal/postgres"
+	"mnatsakan_chat_api/internal/repository"
+	"mnatsakan_chat_api/internal/service"
+	"mnatsakan_chat_api/pkg/database"
+	"mnatsakan_chat_api/pkg/server"
+	"mnatsakan_chat_api/pkg/utils"
 
 	"gorm.io/gorm/logger"
 )

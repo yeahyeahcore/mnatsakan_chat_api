@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/mnatsakan_chat_api/internal/dto"
-	"github.com/mnatsakan_chat_api/pkg/utils"
+	"mnatsakan_chat_api/internal/dto"
+	"mnatsakan_chat_api/pkg/utils"
 )
 
 func (receiver *Handler) register(request *http.Request, response http.ResponseWriter) {

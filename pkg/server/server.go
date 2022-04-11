@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/mnatsakan_chat_api/pkg/types"
+	"mnatsakan_chat_api/pkg/types"
 )
 
 // Server ...

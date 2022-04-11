@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"github.com/mnatsakan_chat_api/internal/model"
-	"github.com/mnatsakan_chat_api/pkg/repository"
+	"mnatsakan_chat_api/internal/model"
+	"mnatsakan_chat_api/pkg/repository"
 )
 
 // UserRepository - interface describes user's model responsibilities
