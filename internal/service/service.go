@@ -2,6 +2,7 @@ package service
 
 import (
 	"mnatsakan_chat_api/internal/repository"
+	"mnatsakan_chat_api/pkg/codec"
 )
 
 var (
@@ -14,8 +15,8 @@ type Service struct {
 }
 
 // New service instance
-func New(repository *repository.Repository) *Service {
+func New(repository *repository.Repository, codec *codec.Codec) *Service {
 	return &Service{
-		AuthService: NewAuthService(&repository.UserRepository),
+		AuthService: NewAuthService(repository.UserRepository, codec),
 	}
 }

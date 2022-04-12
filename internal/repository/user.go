@@ -19,13 +19,21 @@ func (receiver *User) Init(databaseConnection *gorm.DB) *User {
 }
 
 // Insert element to users table
-func (receiver *User) Insert(arguments interface{}) (*model.User, error) {
-	return &model.User{}, nil
+func (receiver *User) Insert(user *model.User) (*model.User, error) {
+	if err := receiver.database.Table(usersTable).Create(user).Error; err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
 // InsertMany elements to users table
-func (receiver *User) InsertMany(arguments []interface{}) (*[]model.User, error) {
-	return &[]model.User{}, nil
+func (receiver *User) InsertMany(users *[]model.User) (*[]model.User, error) {
+	if err := receiver.database.Table(usersTable).Create(users).Error; err != nil {
+		return nil, err
+	}
+
+	return users, nil
 }
 
 // Find users table elements containts arguments

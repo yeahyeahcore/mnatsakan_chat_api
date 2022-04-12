@@ -26,6 +26,8 @@ func (receiver *Server) Run(serverConfiguration *config.HTTPConfiguration, handl
 		WriteTimeout:   10 * time.Second,
 	}
 
+	fmt.Printf("Listening and serving HTTP on %s\n", serverAddress)
+
 	return receiver.httpServer.ListenAndServe()
 }
 

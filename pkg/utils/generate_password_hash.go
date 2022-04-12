@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"fmt"
-
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -14,7 +12,7 @@ const (
 func GeneratePasswordHash(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), cost)
 
-	return fmt.Sprintf("%x", bytes), err
+	return string(bytes), err
 }
 
 // CheckPasswordHash ...

@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"fmt"
+
 	envParser "github.com/caarlos0/env/v6"
 	envLoader "github.com/joho/godotenv"
 )
@@ -10,10 +12,10 @@ func ParseENV[T interface{}]() (*T, error) {
 	var configuration T
 
 	if err := envLoader.Load(".env"); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("loading env error %s", err.Error())
 	}
 	if err := envParser.Parse(&configuration); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("parse env error %s", err.Error())
 	}
 
 	return &configuration, nil

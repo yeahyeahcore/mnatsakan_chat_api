@@ -4,12 +4,8 @@ import (
 	"log"
 	"time"
 
+	"mnatsakan_chat_api/internal/composites"
 	"mnatsakan_chat_api/internal/config"
-	"mnatsakan_chat_api/internal/handler"
-	"mnatsakan_chat_api/internal/repository"
-	"mnatsakan_chat_api/internal/service"
-	"mnatsakan_chat_api/pkg/database"
-	"mnatsakan_chat_api/pkg/postgres"
 	"mnatsakan_chat_api/pkg/server"
 	"mnatsakan_chat_api/pkg/utils"
 
@@ -27,19 +23,14 @@ var loggerConfiguration = logger.Config{
 func Run() {
 	configuration, err := utils.ParseENV[config.Config]()
 	if err != nil {
-		log.Fatalf("configuration file parsing error: %s", err.Error())
+		log.Fatalf(err.Error())
 	}
 
-	postgresDriver := postgres.GetDriver(&configuration.Database)
-
-	databaseConnection, err := database.Connect(postgresDriver, loggerConfiguration)
+	handlersInstance, err := composites.GetHandlersInstance(configuration, loggerConfiguration)
 	if err != nil {
-		log.Fatalf("failed connected to DB: %s", err.Error())
+		log.Fatalf(err.Error())
 	}
 
-	repositoryInstance := repository.New(databaseConnection)
-	serviceInstance := service.New(repositoryInstance)
-	handlersInstance := handler.New(serviceInstance)
 	serverInstance := new(server.Server)
 
 	if err := serverInstance.Run(&configuration.HTTP, handlersInstance.InitRoutes()); err != nil {

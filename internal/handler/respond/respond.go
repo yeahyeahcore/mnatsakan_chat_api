@@ -21,9 +21,9 @@ func SendJSON(response http.ResponseWriter, data interface{}, statusCode int) {
 
 // SendMessage sends message response to client
 func SendMessage(response http.ResponseWriter, message string, statusCode int) {
-	responseMessage := map[string]string{
-		message: message,
+	messageData := map[string]string{
+		"message": message,
 	}
 
-	SendJSON(response, responseMessage, statusCode)
+	SendJSON(response, messageData, statusCode)
 }

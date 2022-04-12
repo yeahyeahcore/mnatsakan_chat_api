@@ -9,8 +9,8 @@ type IRead[T interface{}] interface {
 
 // IWrite - interface describes write responsibilities
 type IWrite[T interface{}] interface {
-	Insert(arguments interface{}) (*T, error)
-	InsertMany(arguments []interface{}) (*[]T, error)
+	Insert(record *T) (*T, error)
+	InsertMany(records *[]T) (*[]T, error)
 }
 
 // IRemove - interface describes remove responsibilities

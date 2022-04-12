@@ -18,7 +18,7 @@ func GetDriver(databaseConfiguration *config.DatabaseConfiguration) gorm.Dialect
 
 func generateConnectionString(config *config.DatabaseConfiguration) string {
 	return fmt.Sprintf(
-		"postgresql://%s:%s@%s:%s/%s?ssl_mode=%s",
+		"postgresql://%s:%s@%s:%s/%s?sslmode=%s",
 		config.User, config.Password, config.Host, config.Port, config.Database, config.SSLMode,
 	)
 }

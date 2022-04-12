@@ -4,17 +4,26 @@ import (
 	"net/http"
 
 	"mnatsakan_chat_api/internal/dto"
+	"mnatsakan_chat_api/internal/handler/respond"
 	"mnatsakan_chat_api/pkg/utils"
 )
 
 func (receiver *Handler) register(request *http.Request, response http.ResponseWriter) {
 	defer request.Body.Close()
 
-	// registerInputData, err := utils.ParseJSON[handler_types.LoginRequest](request.Body)
-	// if err != nil {
-	// 	http.Error(response, err.Error(), http.StatusBadRequest)
-	// 	return
-	// }
+	registerInputData, err := utils.ParseJSON[dto.RegisterRequest](request.Body)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	registerResponse, err := receiver.services.AuthService.Register(registerInputData)
+	if err != nil {
+		http.Error(response, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	respond.SendJSON(response, registerResponse, http.StatusCreated)
 }
 
 func (receiver *Handler) login(request *http.Request, response http.ResponseWriter) {
@@ -22,35 +31,15 @@ func (receiver *Handler) login(request *http.Request, response http.ResponseWrit
 
 	loginInput, err := utils.ParseJSON[dto.LoginRequest](request.Body)
 	if err != nil {
-		http.Error(response, err.Error(), http.StatusBadRequest)
+		respond.SendMessage(response, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	receiver.services.AuthService.Login(loginInput)
+	loginResponse, err := receiver.services.AuthService.Login(loginInput)
+	if err != nil {
+		respond.SendMessage(response, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	// userRepository := receiver.repositories.UserRepository
-
-	// loginRequest, err := utils.ParseJSON[domain.LoginRequest](request.Body)
-	// if err != nil {
-	// 	http.Error(response, err.Error(), http.StatusBadRequest)
-	// 	return
-	// }
-
-	// findUserArguments := map[string]string{
-	// 	"login": loginRequest.Login,
-	// }
-
-	// user, err := userRepository.FindOne(findUserArguments)
-	// if err != nil {
-	// 	http.Error(response, err.Error(), HTTPDatabaseErrorCodes[err])
-	// 	return
-	// }
-
-	// tokenClaims, err := utils.GenerateToken(receiver.brancaInstance, strconv.FormatInt(user.ID, 10), user)
-	// if err != nil {
-	// 	http.Error(response, err.Error(), http.StatusBadRequest)
-	// 	return
-	// }
-
-	// respond.Send(response, tokenClaims, http.StatusOK)
+	respond.SendJSON(response, loginResponse, http.StatusOK)
 }
