@@ -18,5 +18,5 @@ func GetHandlersInstance(config *config.Config, loggerConfig logger.Config) (*ha
 	codecInstance := GetCodecInstance()
 	serviceInstance := service.New(repositoryInstance, codecInstance)
 
-	return handler.New(serviceInstance), nil
+	return handler.New(serviceInstance, codecInstance), nil
 }

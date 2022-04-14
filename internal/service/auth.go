@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
@@ -18,13 +19,13 @@ const (
 	tokenTTL = 12 * time.Hour
 )
 
-// Auth ...
+// Auth service
 type Auth struct {
 	repository repository.UserRepository
 	codec      *codec.Codec
 }
 
-// NewAuthService ...
+// NewAuthService - returns new auth service instance
 func NewAuthService(repository repository.UserRepository, codec *codec.Codec) *Auth {
 	return &Auth{
 		repository: repository,
@@ -32,7 +33,7 @@ func NewAuthService(repository repository.UserRepository, codec *codec.Codec) *A
 	}
 }
 
-// Login ...
+// Login user
 func (receiver *Auth) Login(loginRequest *dto.LoginRequest) (*dto.LoginResponse, error) {
 	findUserArguments := map[string]string{"login": loginRequest.Login}
 
@@ -45,7 +46,7 @@ func (receiver *Auth) Login(loginRequest *dto.LoginRequest) (*dto.LoginResponse,
 		return nil, fmt.Errorf("password is incorrect")
 	}
 
-	token, err := receiver.generateToken(strconv.FormatInt(user.ID, 10))
+	token, err := receiver.GenerateToken(strconv.FormatInt(user.ID, 10))
 	if err != nil {
 		return nil, err
 	}
@@ -57,14 +58,19 @@ func (receiver *Auth) Login(loginRequest *dto.LoginRequest) (*dto.LoginResponse,
 	}, nil
 }
 
-// Register ...
+// Register user
 func (receiver *Auth) Register(registerRequest *dto.RegisterRequest) (*dto.RegisterResponse, error) {
 	passwordHash, err := utils.GeneratePasswordHash(registerRequest.Password)
 	if err != nil {
 		return nil, err
 	}
 
-	user, err := receiver.repository.Insert(&model.User{
+	user, err := receiver.repository.FindOne(map[string]string{"login": registerRequest.Login})
+	if user != nil {
+		return nil, fmt.Errorf("user exist")
+	}
+
+	newUser, err := receiver.repository.Insert(&model.User{
 		Email:    registerRequest.Email,
 		Password: passwordHash,
 		Username: registerRequest.Username,
@@ -72,12 +78,28 @@ func (receiver *Auth) Register(registerRequest *dto.RegisterRequest) (*dto.Regis
 	})
 
 	return &dto.RegisterResponse{
-		ID:       user.ID,
-		Username: user.Username,
+		ID:       newUser.ID,
+		Username: newUser.Username,
 	}, err
 }
 
-func (receiver *Auth) generateToken(data string) (string, error) {
+// ParseToken - parsing token and returns users id
+func (receiver *Auth) ParseToken(accessToken string) (string, error) {
+	token, err := jwt.ParseWithClaims(accessToken, &dto.TokenClaims{}, receiver.checkTokenSignMethod)
+	if err != nil {
+		return "", err
+	}
+
+	claims, ok := token.Claims.(*dto.TokenClaims)
+	if !ok {
+		return "", errors.New("token claims are not of type *dto.TokenClaims")
+	}
+
+	return claims.UserID, nil
+}
+
+// GenerateToken - generates token
+func (receiver *Auth) GenerateToken(userID string) (string, error) {
 	token := jwt.New(receiver.codec.SignMethod)
 
 	standardClaims := &jwt.StandardClaims{
@@ -87,8 +109,16 @@ func (receiver *Auth) generateToken(data string) (string, error) {
 
 	token.Claims = &dto.TokenClaims{
 		StandardClaims: standardClaims,
-		Data:           data,
+		UserID:         userID,
 	}
 
 	return token.SignedString([]byte(receiver.codec.SecretKey))
+}
+
+func (receiver *Auth) checkTokenSignMethod(token *jwt.Token) (interface{}, error) {
+	if token.Method.Alg() != receiver.codec.SignMethod.Name {
+		return nil, fmt.Errorf("unexpected jwt signing method=%v", token.Header["alg"])
+	}
+
+	return []byte(receiver.codec.SecretKey), nil
 }

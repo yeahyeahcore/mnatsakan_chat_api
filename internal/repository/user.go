@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"mnatsakan_chat_api/internal/model"
 
 	"gorm.io/gorm"
@@ -29,11 +30,7 @@ func (receiver *User) Insert(user *model.User) (*model.User, error) {
 
 // InsertMany elements to users table
 func (receiver *User) InsertMany(users *[]model.User) (*[]model.User, error) {
-	if err := receiver.database.Table(usersTable).Create(users).Error; err != nil {
-		return nil, err
-	}
-
-	return users, nil
+	return nil, fmt.Errorf("cannot add many users in db")
 }
 
 // Find users table elements containts arguments

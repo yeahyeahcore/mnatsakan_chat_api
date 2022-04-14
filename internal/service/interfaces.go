@@ -8,4 +8,5 @@ import (
 type AuthService interface {
 	Register(registerRequest *dto.RegisterRequest) (*dto.RegisterResponse, error)
 	Login(loginRequest *dto.LoginRequest) (*dto.LoginResponse, error)
+	ParseToken(token string) (string, error)
 }
