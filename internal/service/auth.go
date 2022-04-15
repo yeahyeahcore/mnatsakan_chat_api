@@ -52,7 +52,8 @@ func (receiver *Auth) Login(loginRequest *dto.LoginRequest) (*dto.LoginResponse,
 	}
 
 	return &dto.LoginResponse{
-		Token: token,
+		UserID: user.ID,
+		Token:  token,
 	}, nil
 }
 

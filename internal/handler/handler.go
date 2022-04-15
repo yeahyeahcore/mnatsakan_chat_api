@@ -40,10 +40,14 @@ func (receiver Handler) InitRoutes() *echo.Echo {
 		authGroup.POST("/register", receiver.register)
 	}
 
-	privateGroup := echo.Group("/")
+	privateGroup := echo.Group("")
 	{
 		privateGroup.Use(middleware.JWTWithConfig(receiver.getAuthMiddlewareConfig()))
 
+		privateGroup.GET("/messages", receiver.readAllChatMessages)
+		privateGroup.GET("/chats", receiver.readAllUsersChats)
+		privateGroup.POST("/message", receiver.insertMessage)
+		privateGroup.POST("/chat", receiver.insertChat)
 	}
 
 	return echo

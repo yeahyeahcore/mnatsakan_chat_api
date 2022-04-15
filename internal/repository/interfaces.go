@@ -10,3 +10,15 @@ type UserRepository interface {
 	repository.IWrite[model.User]
 	repository.IRead[model.User]
 }
+
+// MessageRepository - interface describes messages model responsibilities
+type MessageRepository interface {
+	repository.IWrite[model.Message]
+	repository.IRead[model.Message]
+}
+
+// ChatRepository - interface describes chat's model responsibilities
+type ChatRepository interface {
+	repository.IWrite[model.Chat]
+	repository.IRead[model.Chat]
+}

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+
 	"mnatsakan_chat_api/internal/model"
 
 	"gorm.io/gorm"
