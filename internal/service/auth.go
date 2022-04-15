@@ -52,9 +52,7 @@ func (receiver *Auth) Login(loginRequest *dto.LoginRequest) (*dto.LoginResponse,
 	}
 
 	return &dto.LoginResponse{
-		ID:       user.ID,
-		Username: user.Username,
-		Token:    token,
+		Token: token,
 	}, nil
 }
 
@@ -78,7 +76,6 @@ func (receiver *Auth) Register(registerRequest *dto.RegisterRequest) (*dto.Regis
 	})
 
 	return &dto.RegisterResponse{
-		ID:       newUser.ID,
 		Username: newUser.Username,
 	}, err
 }

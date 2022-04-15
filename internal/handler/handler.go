@@ -30,17 +30,33 @@ func New(services *service.Service, codec *codec.Codec) *Handler {
 func (receiver Handler) InitRoutes() *echo.Echo {
 	echo := echo.New()
 
+	// Settings
+	receiver.setRoutesSettings(echo)
+
+	// Routes
 	authGroup := echo.Group("/auth")
 	{
 		authGroup.POST("/login", receiver.login)
 		authGroup.POST("/register", receiver.register)
 	}
 
-	privateGroup := echo.Group("/admin")
+	privateGroup := echo.Group("/")
 	{
 		privateGroup.Use(middleware.JWTWithConfig(receiver.getAuthMiddlewareConfig()))
 
 	}
 
 	return echo
+}
+
+func (receiver Handler) setRoutesSettings(echo *echo.Echo) {
+	echo.Static("/media", "/static")
+	echo.Use(middleware.Logger())
+	echo.Use(middleware.Recover())
+	echo.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins:     []string{"*"},
+		AllowHeaders:     []string{"*"},
+		AllowCredentials: true,
+		AllowMethods:     []string{"*"},
+	}))
 }

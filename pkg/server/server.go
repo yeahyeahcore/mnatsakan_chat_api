@@ -14,7 +14,7 @@ type Server struct {
 	httpServer *http.Server
 }
 
-// Run ...
+// Run server
 func (receiver *Server) Run(serverConfiguration *config.HTTPConfiguration, handler http.Handler) error {
 	serverAddress := fmt.Sprintf("%s:%s", serverConfiguration.Host, serverConfiguration.Port)
 
@@ -31,7 +31,7 @@ func (receiver *Server) Run(serverConfiguration *config.HTTPConfiguration, handl
 	return receiver.httpServer.ListenAndServe()
 }
 
-// Shutdown ...
+// Shutdown server
 func (receiver *Server) Shutdown(ctx context.Context) error {
 	return receiver.httpServer.Shutdown(ctx)
 }
